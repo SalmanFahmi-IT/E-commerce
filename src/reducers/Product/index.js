@@ -6,13 +6,9 @@ const initialState = {
 
 const reducer = function CartReducer(state = initialState, action){
     switch(action.type){
-        case types.ADD_TO_CART:
+        case types.FETCH_PRODUCTS:
             return{
-                data: state.data.concat([action.payload])
-            };
-        case types.REMOVE_FROM_CART:
-            return{
-                data: state.data.filter(e => e.Id !== action.payload.Id)
+                data: action.payload
             };
         default:
             return state;
