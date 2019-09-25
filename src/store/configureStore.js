@@ -1,20 +1,25 @@
-import { applyMiddleware, createStore } from 'redux'
-import thunkMiddleware from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { applyMiddleware, compose, createStore } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 
-import monitorReducersEnhancer from './enhancers/monitorReducers'
-import loggerMiddleware from './middleware/logger'
-import rootReducer from '../reducers'
+import rootReducer from '../reducers';
+import sagas from '../sagas';
 
-export default function configureStore(preloadedState) {
-  const middlewares = [loggerMiddleware, thunkMiddleware]
-  const middlewareEnhancer = applyMiddleware(...middlewares)
+export default function configureStore(initialState) {
+  const sagaMiddleware = createSagaMiddleware(sagas);
+  const store = createStore(rootReducer, initialState, compose(
+    applyMiddleware(sagaMiddleware),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  ));
 
-  const enhancers = [middlewareEnhancer, monitorReducersEnhancer]
-  const composedEnhancers = composeWithDevTools(...enhancers)
+  sagaMiddleware.run(sagas);
 
-  const store = createStore(rootReducer, preloadedState, composedEnhancers)
+  if (module.hot) {
+    // Enable Webpack hot module replacement for reducers
+    module.hot.accept('../reducers', () => {
+      const nextReducer = require('../reducers').default;
+      store.replaceReducer(nextReducer);
+    });
+  }
 
-  return store
+  return store;
 }
-

@@ -1,4 +1,4 @@
-import * as types from '../../Constants';
+import * as types from '../../constants';
 
 export const AddToCart = function(payload){
     return {
