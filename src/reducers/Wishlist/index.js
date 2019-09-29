@@ -8,7 +8,9 @@ const reducer = function CartReducer(state = initialState, action){
     switch(action.type){
         case types.ADD_TO_WISHLIST:
             return{
-                data: state.data.concat([action.payload])
+                data:   state.data.includes(action.payload) 
+                        ? state.data.filter(e => e.uuid !== action.payload.uuid) 
+                        : state.data.concat([action.payload])
             };
         case types.REMOVE_FROM_WISHLIST:
             return{

@@ -1,7 +1,3 @@
-import * as actionsCart from './Cart';
-import * as actionsProduct from './Product';
-
-export {
-    actionsCart, 
-    actionsProduct
-};
+export * from './Cart';
+export * from './Product';
+export * from './Wishlist';

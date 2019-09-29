@@ -1,7 +1,7 @@
 function checkStatus(response){
     if(response.status >= 200 || response.status <= 300)
     {
-        return response;
+        return response.json();
     }
 
     const error = new Error(response.statusText);
@@ -14,7 +14,7 @@ function parseJSON(response){
     {
         return null;
     }
-    return response.json();
+    return response;
 }
 
 export default function request(url, options){

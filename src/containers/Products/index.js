@@ -1,14 +1,14 @@
 import React from 'react';
 import Product from '../../components/Product';
 
-const Products = ({Products, handleClick}) => (
+const Products = props => (
     <ul className="product-list">
         {
-            Products && Products.map((item, index) => {
+            props.Products.data && props.Products.data.map((item, index) => {
             return <Product 
-                    key = {item.Id}
+                    key = {item.uuid}
                     Item = {item}
-                    handleClick={handleClick}
+                    {...props}
                     />
             })
         }
